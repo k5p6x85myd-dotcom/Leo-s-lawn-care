@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leo's Lawn Care - Premium Lawn Services</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --accent: #81c784;
+            --dark: #212121;
+            --light: #f5f5f5;
+            --white: #ffffff;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        header {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        .cart-icon-container {
+            position: relative;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .cart-count {
+            background-color: #d32f2f;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1533460004989-cef01064af7e?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 1rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 2.5px; /* dummy placeholder */
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .service-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .service-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        .service-card .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin: 1rem 0;
+        }
+        .booking-box, .cart-box {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 90px;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-item button {
+            background: #ffdde1;
+            color: #c62828;
+            border: none;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .cart-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .section-title {
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+        .hidden {
+            display: none;
+        }
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">🌱 Leo's Lawn Care</div>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#book">Book Appointment</a></li>
+                <li class="cart-icon-container" onclick="toggleCartView()">
+                    🛒 Cart <span class="cart-count" id="cart-count">0</span>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Expert Lawn Care Made Simple</h1>
+        <p>Book your standard mowing, cleanup, or landscaping package online in seconds.</p>
+        <a href="#services" class="btn">View Services & Book</a>
+    </section>
+
+    <main class="container">
+        <div class="main-layout">
+            <!-- Left Side: Services & Appointment Form -->
+            <div>
+                <h2 class="section-title" id="services">1. Choose a Service</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div>
+                            <h3>Standard Lawn Mowing</h3>
+                            <p>Includes precision mowing, string trimming around edges, and cleanup of clippings from driveways/sidewalks.</p>
+                        </div>
+                        <div>
+                            <div class="price">$45.00</div>
+                            <button class="btn" onclick="addToCart('Standard Lawn Mowing', 45.00)">Select Service</button>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div>
+                            <h3>Premium Edge & Trim</h3>
+                            <p>Deep curb/sidewalk edging, bush trimming, weed removal from landscape beds, and lawn health inspection.</p>
+                        </div>
+                        <div>
+                            <div class="price">$75.00</div>
+                            <button class="btn" onclick="addToCart('Premium Edge & Trim', 75.00)">Select Service</button>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div>
+                            <h3>Full Property Cleanup</h3>
+                            <p>Comprehensive leaf, twig, and debris removal. Ideal for seasonal transitions in Spring or Fall.</p>
+                        </div>
+                        <div>
+                            <div class="price">$120.00</div>
+                            <button class="btn" onclick="addToCart('Full Property Cleanup', 120.00)">Select Service</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-title" id="book">2. Schedule Details</h2>
+                <div class="booking-box">
+                    <form id="booking-form" onsubmit="handleCheckout(event)">
+                        <div class="form-group">
+                            <label for="client-name">Your Full Name</label>
+                            <input type="text" id="client-name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-phone">Phone Number</label>
+                            <input type="tel" id="client-phone" required placeholder="(555) 000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-address">Property Address</label>
+                            <input type="text" id="client-address" required placeholder="123 Main St, Your Town">
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-date">Preferred Date</label>
+                            <input type="date" id="appointment-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-time">Preferred Time Window</label>
+                            <select id="appointment-time" required>
+                                <option value="Morning (8 AM - 12 PM)">Morning (8 AM - 12 PM)</option>
+                                <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; padding: 1rem;">Confirm & Book Appointment</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side: Sticky Cart View -->
+            <div>
+                <h2 class="section-title">Your Order Summary</h2>
+                <div class="cart-box">
+                    <div id="cart-items-container">
+                        <p style="color: #666; text-align: center;" id="empty-cart-msg">No services selected yet. Click "Select Service" to build your appointment package.</p>
+                    </div>
+                    <div class="cart-total">
+                        <span>Total Estimate:</span>
+                        <span id="cart-total-amount">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Leo's Lawn Care. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            // Clear previous items if you want single service selection, 
+            // or allow combining. Let's allow combining packages!
+            const exists = cart.find(item => item.name === name);
+            if (!exists) {
+                cart.push({ name, price });
+                updateCartUI();
+            } else {
+                alert("This service package is already added to your booking summary!");
+            }
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const countBadge = document.getElementById('cart-count');
+            const totalDisplay = document.getElementById('cart-total-amount');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p style="color: #666; text-align: center;" id="empty-cart-msg">No services selected yet. Click "Select Service" to build your appointment package.</p>`;
+                countBadge.innerText = '0';
+                totalDisplay.innerText = '$0.00';
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small>$${item.price.toFixed(2)}</small>
+                    </div>
+                    <button onclick="removeFromCart('${item.name}')">Remove</button>
+                `;
+                container.appendChild(div);
+            });
+
+            countBadge.innerText = cart.length;
+            totalDisplay.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function handleCheckout(event) {
+            event.preventDefault();
+            if (cart.length === 0) {
+                alert("Please select at least one lawn care service before booking!");
+                return;
+            }
+
+            const name = document.getElementById('client-name').value;
+            const address = document.getElementById('client-address').value;
+            const date = document.getElementById('appointment-date').value;
+            const time = document.getElementById('appointment-time').value;
+
+            let servicesList = cart.map(i => i.name).join(', ');
+
+            alert(`🎉 Success! Booking request received.\n\nThank you, ${name}! We have scheduled "${servicesList}" for your property at ${address} on ${date} during the ${time} window.\n\nLeo's Lawn Care will send a text confirmation shortly!`);
+            
+            // Reset form and cart
+            document.getElementById('booking-form').reset();
+            cart = [];
+            updateCartUI();
+        }
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('appointment-date').setAttribute('min', today);
+    </script>
+</body>
+</html>
